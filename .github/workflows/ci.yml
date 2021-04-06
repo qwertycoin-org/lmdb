@@ -62,4 +62,4 @@ jobs:
         run: |
           $env:PATH = "$env:PATH;$env:MSBUILD_PATH"
           cd build
-          MSBuild lmdb.sln /p:Configuration=Release /m
+          MSBuild lmdb-adv.sln /p:Configuration=Release /m
