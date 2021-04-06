@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
@@ -12,7 +12,7 @@ set(LIB_PATCH_VERSION "70")
 set(LIB_VERSION_STRING "${LIB_MAJOR_VERSION}.${LIB_MINOR_VERSION}.${LIB_PATCH_VERSION}")
 
 cmake_policy(SET CMP0048 NEW)
-project(lmdb-adv VERSION "${LIB_VERSION_STRING}" LANGUAGES CXX)
+project(lmdb-adv VERSION "${LIB_VERSION_STRING}" LANGUAGES CXX C)
 
 ## This section describes our general CMake setup options
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -32,10 +32,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(STATIC ON CACHE BOOL FORCE "Link libraries statically? Forced to ON")
 add_definitions(-DSTATICLIB)
 
-add_subdirectory(lmdb)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lmdb)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ext)
-
 if(MSVC)
     add_definitions("/EHsc -std:c++17 /DWIN32_LEAN_AND_MEAN /O2 /wd4267 /wd4996 /wd4244 /wd4333 /wd4146 /wd4172")
 endif()
@@ -44,11 +40,18 @@ if(NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -Wno-return-local-addr")
 endif()
 
+set(LMDB_HEADERS
+        lmdb.h
+        lmdb-adv.h
+        midl.h)
+
 set(LMDB_SRC
+        mdb.c
+        midl.c
         lmdb-adv.cpp
         )
 
-add_library(lmdb-adv STATIC ${LMDB_SRC})
+add_library(lmdb-adv STATIC ${LMDB_HEADERS} ${LMDB_SRC})
 target_link_libraries(lmdb-adv lmdb)
 target_include_directories(lmdb-adv PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
