@@ -40,19 +40,13 @@ if(NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -Wno-return-local-addr")
 endif()
 
-set(LMDB_HEADERS
-        lmdb.h
-        lmdb-adv.h
-        midl.h)
-
 set(LMDB_SRC
         mdb.c
         midl.c
         lmdb-adv.cpp
         )
 
-add_library(lmdb-adv STATIC ${LMDB_HEADERS} ${LMDB_SRC})
-target_link_libraries(lmdb-adv lmdb)
+add_library(lmdb-adv STATIC ${LMDB_SRC})
 target_include_directories(lmdb-adv PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(WIN32)
