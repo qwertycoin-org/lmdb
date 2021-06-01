@@ -7,7 +7,7 @@
 #include <memory>
 #include <mutex>
 #include <set>
-#include <string.h>
+#include <cstring>
 #include <string>
 #include <thread>
 #include <vector>
