@@ -178,6 +178,13 @@ typedef	int	mdb_mode_t;
 typedef	mode_t	mdb_mode_t;
 #endif
 
+#ifdef MDB_VL32
+typedef uint64_t	mdb_size_t;
+#define mdb_env_create	mdb_env_create_vl32	/**< Prevent mixing with non-VL32 builds */
+#else
+typedef size_t	mdb_size_t;
+#endif
+
 /** An abstraction for a file handle.
  *	On POSIX systems file handles are small integers. On Windows
  *	they're opaque pointers.
